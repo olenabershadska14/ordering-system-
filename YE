@@ -1,0 +1,97 @@
+class MenuItem:
+    def __init__(self, item_id, name, price):
+        self.item_id = item_id
+        self.name = name
+        self.price = price
+
+class Order:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, item):
+        self.items.append(item)
+
+    def calculate_total(self):
+        total = sum(item.price for item in self.items)
+        return total
+
+    def display_order(self):
+        if not self.items:
+            print("Your order is empty.")
+        else:
+            print("=== Your Order ===")
+            for item in self.items:
+                print(f"{item.name}: ${item.price:.2f}")
+            total = self.calculate_total()
+            print(f"Total: ${total:.2f}")
+
+class Restaurant:
+    def __init__(self):
+        self.menu = {}
+
+    def add_to_menu(self, item):
+        self.menu[item.item_id] = item
+
+    def display_menu(self):
+        if not self.menu:
+            print("The menu is empty.")
+        else:
+            print("=== Menu ===")
+            for item_id, item in self.menu.items():
+                print(f"ID: {item_id}, {item.name}: ${item.price:.2f}")
+
+def main():
+    restaurant = Restaurant()
+    order = Order()
+
+    # Creating menu items
+    item1 = MenuItem(1, "Burger", 8.99)
+    item2 = MenuItem(2, "Pizza", 10.99)
+    item3 = MenuItem(3, "Salad", 6.99)
+
+    # Adding items to the restaurant menu
+    restaurant.add_to_menu(item1)
+    restaurant.add_to_menu(item2)
+    restaurant.add_to_menu(item3)
+
+    while True:
+        print("\n===== Restaurant Ordering System =====")
+        print("1. View Menu")
+        print("2. Add Item to Order")
+        print("3. View Order")
+        print("4. Place Order")
+        print("5. Exit")
+
+        choice = input("Enter your choice (1-5): ")
+
+        if choice == "1":
+            restaurant.display_menu()
+
+        elif choice == "2":
+            item_id = int(input("Enter item ID to add to order: "))
+            item = restaurant.menu.get(item_id)
+            if item:
+                order.add_item(item)
+                print(f"{item.name} added to your order.")
+            else:
+                print("Item not found in the menu.")
+
+        elif choice == "3":
+            order.display_order()
+
+        elif choice == "4":
+            if not order.items:
+                print("Please add items to your order before placing it.")
+            else:
+                print("Order placed! Thank you for dining with us.")
+                break
+
+        elif choice == "5":
+            print("Thank you. Have a great day!")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
